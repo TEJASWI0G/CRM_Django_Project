@@ -1,0 +1,13 @@
+{
+    "files.associations": {
+        "**/templates/**/*.html": "html"
+    },
+    "editor.quickSuggestions": {
+        "other": true,
+        "comments": false,
+        "strings": true
+    },
+    "html.suggest.html5": true,
+    "files.defaultLanguage": "html",
+    "files.autoGuessEncoding": true
+}
