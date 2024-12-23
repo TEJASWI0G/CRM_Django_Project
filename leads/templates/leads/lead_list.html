@@ -1,0 +1,90 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+<section class="text-gray-600 body-font">
+    <div class="container px-5 py-24 mx-auto">
+        <div class="w-full py-6 flex justify-between items-center border-gray-200">
+            <div>
+                <h1 class="text-4xl text-gray-800">Leads</h1>
+                <a class="text-gray-500 hover:text-blue-500" href="{% url 'leads:category-list' %}">
+                    View Categories
+                </a>
+            </div>
+            {% if request.user.is_organisor %}
+            <div>
+                <a class="text-gray-500 hover:text-blue-500" href="{% url 'leads:lead-create' %}">
+                    Create a new lead
+                </a>
+            </div>
+            {% endif %}
+        </div>
+
+        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+            {% for lead in leads %}
+            <div class="flex border-2 rounded-lg border-gray-200 bg-white p-6 shadow-md hover:shadow-lg transition-all">
+                <div class="w-16 h-16 mr-4 flex items-center justify-center rounded-full bg-indigo-100 text-indigo-500">
+                    <svg fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" class="w-8 h-8" viewBox="0 0 24 24">
+                        <path d="M22 12h-4l-3 9L9 3l-3 9H2"></path>
+                    </svg>
+                </div>
+                <div class="flex-grow">
+                    <h2 class="text-gray-900 text-lg font-medium mb-2">
+                        {{ lead.first_name }} {{ lead.last_name }}
+                    </h2>
+                    <p class="leading-relaxed text-base">
+                        {% if lead.description %}
+                            {{ lead.description }}
+                        {% else %}
+                            Add description
+                        {% endif %}
+                    </p>
+                    <a href="/leads/{{ lead.pk }}/" class="mt-3 text-indigo-500 inline-flex items-center hover:text-blue-600">
+                        View this Lead
+                        <svg fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" class="w-4 h-4 ml-2" viewBox="0 0 24 24">
+                            <path d="M5 12h14M12 5l7 7-7 7"></path>
+                        </svg>
+                    </a>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+
+        {% if unassigned_leads.exists %}
+        <div class="mt-12">
+            <h1 class="text-4xl text-gray-800 mb-6">Unassigned Leads</h1>
+            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+                {% for lead in unassigned_leads %}
+                <div class="flex border-2 rounded-lg border-gray-200 bg-white p-6 shadow-md hover:shadow-lg transition-all">
+                    <div class="w-16 h-16 mr-4 flex items-center justify-center rounded-full bg-indigo-100 text-indigo-500">
+                        <svg fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" class="w-8 h-8" viewBox="0 0 24 24">
+                            <path d="M22 12h-4l-3 9L9 3l-3 9H2"></path>
+                        </svg>
+                    </div>
+                    <div class="flex-grow">
+                        <h2 class="text-gray-900 text-lg font-medium mb-2">
+                            {{ lead.first_name }} {{ lead.last_name }}
+                        </h2>
+                        <p class="leading-relaxed text-base">
+                            {% if lead.description %}
+                                {{ lead.description }}
+                            {% else %}
+                                Update Agent to add description
+                            {% endif %}
+                        </p>
+                        <a href="{% url 'leads:assign-agent' lead.pk %}" class="mt-3 text-indigo-500 inline-flex items-center hover:text-blue-600">
+                            Assign an agent
+                            <svg fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" class="w-4 h-4 ml-2" viewBox="0 0 24 24">
+                                <path d="M5 12h14M12 5l7 7-7 7"></path>
+                            </svg>
+                        </a>
+                    </div>
+                </div>
+                {% endfor %}
+            </div>
+        </div>
+        {% endif %}
+    </div>
+</section>
+
+{% endblock content %}
